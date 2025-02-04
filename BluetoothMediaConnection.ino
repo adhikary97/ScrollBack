@@ -42,27 +42,21 @@ void setup() {
 
 void loop() {
   if (bleKeyboard.isConnected()) {
-    // Handle rotary encoder
     RotaryEncoder::Direction direction = encoder.getDirection();
 
     if (direction == RotaryEncoder::Direction::CLOCKWISE) { 
       bleKeyboard.write(KEY_UP_ARROW);
-      Serial.println("Volume Down");
+      Serial.println("Key Up");
     } else if (direction == RotaryEncoder::Direction::COUNTERCLOCKWISE) {
       bleKeyboard.write(KEY_DOWN_ARROW);
-      Serial.println("Volume Up");
+      Serial.println("Key Down");
     }
 
-    // Handle buttons with state change detection
     static bool lastButtonUpState = HIGH;
     bool buttonUpState = digitalRead(BUTTON_UP);
     if (buttonUpState != lastButtonUpState) {
       if (buttonUpState == LOW) {
-        // Button pressed
-        bleKeyboard.press(KEY_LEFT_CTRL);
-        bleKeyboard.press(KEY_LEFT_SHIFT);
-        bleKeyboard.press('K');
-        bleKeyboard.releaseAll();
+        bleKeyboard.write(KEY_TAB);
         Serial.println("Button Up Pressed");
       }
       lastButtonUpState = buttonUpState;
